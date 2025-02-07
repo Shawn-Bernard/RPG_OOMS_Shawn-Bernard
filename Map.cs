@@ -5,18 +5,28 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
 using System.Numerics;
-using static System.Net.Mime.MediaTypeNames;
 public class Map
 {
-    private Texture2D Ground;
+    public Texture2D Ground;
+    public Rectangle MapPosition;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private StringReader Map1;
-    private string path = $"{Environment.CurrentDirectory}";
+    public char tile;
+    private Game game;
+    //private StringReader Map1;
+    private string path = $"{Environment.CurrentDirectory}/Maps";
+    private string Level_1 = "Level1";
+    private string Level_2 = "Level2";
+    private string Level_3 = "Level3";
+
+    public Map(Game GameManager)
+    {
+        game = GameManager;
+    }
     public void Draw()
     {
-        ConvertMapToTilemap(Map1.ReadLine());
+       ConvertMapToTilemap(path+Level_1);
     }
     public void LoadPremadeMap(string Path)
     {
@@ -38,8 +48,14 @@ public class Map
             for (int x = 0; x < Map[y].Length; x++)
             {
                 tile = Map[y][x];
-
-                
+                switch (tile)
+                {
+                    case '-':
+                        Ground = game.Content.Load<Texture2D>("Ground");
+                        Rectangle MapPosition = new Rectangle(0, 0, Ground.Width, Ground.Height);
+                        //_spriteBatch.Draw(Ground, MapPosition,Color.Beige);
+                        break;
+                }
             }
         }
 
