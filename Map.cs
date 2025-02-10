@@ -51,8 +51,8 @@ public class Map
                 switch (tile)
                 {
                     case '-':
-                        Ground = game.Content.Load<Texture2D>("Ground");
-                        Rectangle MapPosition = new Rectangle(0, 0, Ground.Width, Ground.Height);
+                        //Ground = game.Content.Load<Texture2D>("Ground");
+                        Rectangle MapPosition = new Rectangle(x, y, Ground.Width, Ground.Height);
                         //_spriteBatch.Draw(Ground, MapPosition,Color.Beige);
                         break;
                 }
