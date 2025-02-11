@@ -23,6 +23,7 @@ public class Map
     public Map(Game GameManager)
     {
         game = GameManager;
+        
     }
     public void Draw()
     {
