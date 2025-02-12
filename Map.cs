@@ -1,64 +1,91 @@
-﻿using System;
-using System.Reflection.Metadata;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using RPG_OOMS_Shawn_Bernard;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Numerics;
+
 public class Map
 {
-    public Texture2D Ground;
-    public Rectangle MapPosition;
+    private Texture2D Ground;
+    private Texture2D Wall;
+
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    public char tile;
-    private Game game;
-    //private StringReader Map1;
-    private string path = $"{Environment.CurrentDirectory}/Maps";
-    private string Level_1 = "Level1";
-    private string Level_2 = "Level2";
-    private string Level_3 = "Level3";
+    private Dictionary<Vector2, int> tileMap;
+    // Getting the current directory which is "Game file" > bin > Debug > net6.0
+    // But the game hates that so were going back 3 folders out with /../ and going into my maps folder
+    string path = $"{Environment.CurrentDirectory}/../../../Maps/Map1.txt";
 
-    public Map(Game GameManager)
+    Game1 game;
+    /// <summary>
+    /// This will convert my map
+    /// </summary>
+    public Map(Game1 gameManager)
     {
-        game = GameManager;
+        game = gameManager;
+
+        _spriteBatch = gameManager._spriteBatch;
+        _graphics = gameManager._graphics;
+
         
-    }
-    public void Draw()
-    {
-       ConvertMapToTilemap(path+Level_1);
-    }
-    public void LoadPremadeMap(string Path)
-    {
+        tileMap = LoadMap(path);
 
-        if (File.Exists(Path))
-        {
-            string mapData = File.ReadAllText(Path);
-            ConvertMapToTilemap(mapData);
-        }
+        LoadContent(Ground, "Ground");
+        LoadContent(Wall, "Wall");
     }
-    public void ConvertMapToTilemap(string mapData)
+    private void LoadContent(Texture2D texture2D ,string textureName)
     {
-        //Split the map when no text is there
-        string[] Map = mapData.Split("\n");
-        char tile;
+        texture2D = game.Content.Load<Texture2D>(textureName);
+    }
 
-        for (int y = 0; y < Map.Length; y++)
+    private Dictionary<Vector2, int> LoadMap(string filepath)
+    {
+        Dictionary<Vector2, int> result = new();
+        //Reading in my file path
+        StreamReader reader = new(path);
+        int y = 0;
+        string line;
+        // reading my line untill it untill I can
+        while ((line = reader.ReadLine()) != null)
         {
-            for (int x = 0; x < Map[y].Length; x++)
+            for (int x = 0; x < line.Length; x++)
             {
-                tile = Map[y][x];
-                switch (tile)
+                char tile = line[x];
+
+                if (tile == '#')
                 {
-                    case '-':
-                        //Ground = game.Content.Load<Texture2D>("Ground");
-                        Rectangle MapPosition = new Rectangle(x, y, Ground.Width, Ground.Height);
-                        //_spriteBatch.Draw(Ground, MapPosition,Color.Beige);
-                        break;
+                    result[new Vector2(x, y)] = 0;
+                }
+                else if (tile == '-')
+                {
+                    result[new Vector2(x, y)] = 1;
                 }
             }
+            y++;
         }
+        return result;
+    }
+    public void drawMap()
+    {
+        foreach (var item in tileMap)
+        {
+            Vector2 position = new Vector2(item.Key.X * 16, item.Key.Y * 16);
 
+            if (item.Value == 0)
+            {
+                //_spriteBatch.Draw(Wall, position, Color.White);
+                game._spriteBatch.Draw(Wall, position, Color.White);
+                Debug.WriteLine(item.Value);
+            }
+            else if (item.Value == 1)
+            {
+                game._spriteBatch.Draw(Ground, position, Color.White);
+                Debug.WriteLine(item.Value);
+            }
+
+        }
     }
 }
