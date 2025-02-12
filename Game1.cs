@@ -15,7 +15,12 @@ namespace RPG_OOMS_Shawn_Bernard
     {
         public GraphicsDeviceManager _graphics;
         public SpriteBatch _spriteBatch;
+        Vector2 Boom;
         private Map map;
+        private Texture2D Ground;
+        private Texture2D Wall;
+
+        private Game1 instance;
         /// <summary>
         /// This is 
         /// </summary>
@@ -24,7 +29,8 @@ namespace RPG_OOMS_Shawn_Bernard
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            map = new Map(this);
+            
+            instance = this;
         }
 
         protected override void Initialize()
@@ -38,7 +44,9 @@ namespace RPG_OOMS_Shawn_Bernard
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
-
+            Ground = Content.Load<Texture2D>("Ground");
+            Wall = Content.Load<Texture2D>("Wall");
+            map = new Map(Ground,Wall);
         }
 
         protected override void Update(GameTime gameTime)
@@ -54,9 +62,10 @@ namespace RPG_OOMS_Shawn_Bernard
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _graphics.BeginDraw();
-            map.drawMap();
-            _graphics.EndDraw();
+            _spriteBatch.Begin();
+
+
+            _spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

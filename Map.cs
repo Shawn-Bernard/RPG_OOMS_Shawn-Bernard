@@ -5,40 +5,29 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using RPG_OOMS_ShawnBernard;
 
 public class Map
 {
-    private Texture2D Ground;
-    private Texture2D Wall;
-
-    private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
+    public Texture2D Ground;
+    public Texture2D Wall;
+    public Vector2 Position;
 
     private Dictionary<Vector2, int> tileMap;
     // Getting the current directory which is "Game file" > bin > Debug > net6.0
     // But the game hates that so were going back 3 folders out with /../ and going into my maps folder
     string path = $"{Environment.CurrentDirectory}/../../../Maps/Map1.txt";
-
-    Game1 game;
+    Game1 gameManger;
     /// <summary>
     /// This will convert my map
     /// </summary>
-    public Map(Game1 gameManager)
+    public Map(Texture2D Ground,Texture2D Wall)
     {
-        game = gameManager;
-
-        _spriteBatch = gameManager._spriteBatch;
-        _graphics = gameManager._graphics;
-
-        
+        Game1 gameManager = new Game1();
+        this.Ground = Ground;
+        this.Wall = Wall;
         tileMap = LoadMap(path);
 
-        LoadContent(Ground, "Ground");
-        LoadContent(Wall, "Wall");
-    }
-    private void LoadContent(Texture2D texture2D ,string textureName)
-    {
-        texture2D = game.Content.Load<Texture2D>(textureName);
     }
 
     private Dictionary<Vector2, int> LoadMap(string filepath)
@@ -70,22 +59,23 @@ public class Map
     }
     public void drawMap()
     {
+        gameManger._spriteBatch.Begin();
         foreach (var item in tileMap)
         {
-            Vector2 position = new Vector2(item.Key.X * 16, item.Key.Y * 16);
+            Position = new Vector2(item.Key.X * 16, item.Key.Y * 16);
 
             if (item.Value == 0)
             {
-                //_spriteBatch.Draw(Wall, position, Color.White);
-                game._spriteBatch.Draw(Wall, position, Color.White);
+                //gameManger._spriteBatch.Draw(Wall, position, Color.White);
                 Debug.WriteLine(item.Value);
             }
             else if (item.Value == 1)
             {
-                game._spriteBatch.Draw(Ground, position, Color.White);
+                //gameManger._spriteBatch.Draw(Ground, position, Color.White);
                 Debug.WriteLine(item.Value);
             }
 
         }
+        gameManger._spriteBatch.End();
     }
 }
