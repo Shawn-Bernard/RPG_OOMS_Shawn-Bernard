@@ -1,81 +1,105 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using RPG_OOMS_Shawn_Bernard;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using RPG_OOMS_ShawnBernard;
 
-public class Map
+public class Map : GameObject
 {
-    public Texture2D Ground;
-    public Texture2D Wall;
-    public Vector2 Position;
-
-    private Dictionary<Vector2, int> tileMap;
-    // Getting the current directory which is "Game file" > bin > Debug > net6.0
-    // But the game hates that so were going back 3 folders out with /../ and going into my maps folder
-    string path = $"{Environment.CurrentDirectory}/../../../Maps/Map1.txt";
-    Game1 gameManger;
-    /// <summary>
-    /// This will convert my map
-    /// </summary>
-    public Map(Texture2D Ground,Texture2D Wall)
+    public Map(Texture2D Sprite_1,Texture2D Sprite_2 ) : base(Sprite_1, Sprite_2)
     {
-        Game1 gameManager = new Game1();
-        this.Ground = Ground;
-        this.Wall = Wall;
-        tileMap = LoadMap(path);
+        this.texture_1 = Sprite_1;
+        this.texture_2 = Sprite_2;
+        Debug.Write($"map is here ");
+        LoadMap loadMap = new LoadMap();
+        loadMap.SetGameObject(this);
+        AddComponent(loadMap);
+    }
+}
+public class LoadMap : Component
+{
+    private string path = $"{Environment.CurrentDirectory}/../../../Maps/";
+    public Dictionary<Vector2, int> tileMap;
+    private List<string> Maps = new List<string>();
 
+    GameObject player;
+    public override void Start()
+    {
+        AddPreMadeMaps();
+        //Debug.Write(path + PickRandomMap());
+        tileMap = TextMap(path+PickRandomMap());
+        //Debug.Write($"im here");
+        
+        
+    }
+    private void AddPreMadeMaps()
+    {
+        Maps.Add("Level_1.txt");
+        Maps.Add("Level_2.txt");
+        Maps.Add("Level_3.txt");
     }
 
-    private Dictionary<Vector2, int> LoadMap(string filepath)
+    private string PickRandomMap()
     {
-        Dictionary<Vector2, int> result = new();
-        //Reading in my file path
-        StreamReader reader = new(path);
+        Random random = new Random();
+        int index = random.Next(Maps.Count);
+        return Maps[index];
+    }
+    private Dictionary<Vector2, int> TextMap(string filepath)
+    {
+        Dictionary<Vector2, int> result = new Dictionary<Vector2, int>();
+        StreamReader reader = new StreamReader(filepath);
         int y = 0;
         string line;
-        // reading my line untill it untill I can
         while ((line = reader.ReadLine()) != null)
         {
             for (int x = 0; x < line.Length; x++)
             {
                 char tile = line[x];
-
-                if (tile == '#')
+                switch (tile)
                 {
-                    result[new Vector2(x, y)] = 0;
-                }
-                else if (tile == '-')
-                {
-                    result[new Vector2(x, y)] = 1;
+                    case '#':
+                        result[new Vector2(x, y)] = 0;
+                        break;
+                    case '-':
+                        result[new Vector2(x, y)] = 1;
+                        break;
+                    case '*':
+                        result[new Vector2(x, y)] = 2;
+                        break;
                 }
             }
             y++;
         }
         return result;
     }
-    public void drawMap()
+    /// <summary>
+    /// Overriding my OnDraw because I need the position from the results in text map
+    /// </summary>
+    /// <param name="spriteBatch"></param>
+    public override void OnDraw(SpriteBatch spriteBatch)
     {
-        gameManger._spriteBatch.Begin();
         foreach (var item in tileMap)
         {
-            Position = new Vector2(item.Key.X * 16, item.Key.Y * 16);
+            Vector2 Position = new Vector2(item.Key.X * 16, item.Key.Y * 16);
 
-            if (item.Value == 0)
+            switch (item.Value)
             {
-                //gameManger._spriteBatch.Draw(Wall, position, Color.White);
-                Debug.WriteLine(item.Value);
+                case 0:
+                    spriteBatch.Draw(gameObject.texture_1, Position, gameObject.color);
+                    break;
+                case 1:
+                    spriteBatch.Draw(gameObject.texture_2, Position, gameObject.color);
+                    break;
+                case 2:
+                    spriteBatch.Draw(gameObject.texture_1, Position, gameObject.color);
+                    break;
             }
-            else if (item.Value == 1)
-            {
-                //gameManger._spriteBatch.Draw(Ground, position, Color.White);
-                Debug.WriteLine(item.Value);
-            }
-
         }
-        gameManger._spriteBatch.End();
+    }
+
+    public override void Update()
+    {
     }
 }

@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPG_OOMS_Shawn-Bernard", "R
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{787D8248-29B8-400D-87BF-F3AD559520CE}"
 	ProjectSection(SolutionItems) = preProject
+		Compoment.cs = Compoment.cs
+		GameObject.cs = GameObject.cs
 		Map.cs = Map.cs
+		Player.cs = Player.cs
+		Scene.cs = Scene.cs
 	EndProjectSection
 EndProject
 Global
