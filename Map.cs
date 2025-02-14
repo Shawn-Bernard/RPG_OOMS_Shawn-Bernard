@@ -7,10 +7,15 @@ using System.IO;
 
 public class Map : GameObject
 {
+    /// <summary>
+    /// Setting the sprites when a new map is made
+    /// </summary>
+    /// <param name="Sprite_1"></param>
+    /// <param name="Sprite_2"></param>
     public Map(Texture2D Sprite_1,Texture2D Sprite_2 ) : base(Sprite_1, Sprite_2)
     {
-        this.texture_1 = Sprite_1;
-        this.texture_2 = Sprite_2;
+        this.Texture_1 = Sprite_1;
+        this.Texture_2 = Sprite_2;
         Debug.Write($"map is here ");
         LoadMap loadMap = new LoadMap();
         loadMap.SetGameObject(this);
@@ -20,19 +25,19 @@ public class Map : GameObject
 public class LoadMap : Component
 {
     private string path = $"{Environment.CurrentDirectory}/../../../Maps/";
-    public Dictionary<Vector2, int> tileMap;
+    private Dictionary<Vector2, int> tileMap;
     private List<string> Maps = new List<string>();
 
-    GameObject player;
     public override void Start()
     {
         AddPreMadeMaps();
         //Debug.Write(path + PickRandomMap());
+        //Adding in my path string with my random map string
         tileMap = TextMap(path+PickRandomMap());
         //Debug.Write($"im here");
-        
-        
+
     }
+    // Adding my list of strings for my map
     private void AddPreMadeMaps()
     {
         Maps.Add("Level_1.txt");
@@ -40,6 +45,7 @@ public class LoadMap : Component
         Maps.Add("Level_3.txt");
     }
 
+    //Picks a random map from the list of maps 
     private string PickRandomMap()
     {
         Random random = new Random();
@@ -49,9 +55,11 @@ public class LoadMap : Component
     private Dictionary<Vector2, int> TextMap(string filepath)
     {
         Dictionary<Vector2, int> result = new Dictionary<Vector2, int>();
+        //This will read my map text file
         StreamReader reader = new StreamReader(filepath);
         int y = 0;
         string line;
+        //This will give line the value untill the reader is done reading the text file
         while ((line = reader.ReadLine()) != null)
         {
             for (int x = 0; x < line.Length; x++)
@@ -60,12 +68,14 @@ public class LoadMap : Component
                 switch (tile)
                 {
                     case '#':
+                        //Results will store a Vector2 with a value (Example vector2(0,0) with the value of 0
                         result[new Vector2(x, y)] = 0;
                         break;
                     case '-':
                         result[new Vector2(x, y)] = 1;
                         break;
                     case '*':
+                        //This would be the player if I got it working
                         result[new Vector2(x, y)] = 2;
                         break;
                 }
@@ -80,26 +90,23 @@ public class LoadMap : Component
     /// <param name="spriteBatch"></param>
     public override void OnDraw(SpriteBatch spriteBatch)
     {
-        foreach (var item in tileMap)
+        //The result is the return from Text Map
+        foreach (var Result in tileMap)
         {
-            Vector2 Position = new Vector2(item.Key.X * 16, item.Key.Y * 16);
+            Vector2 Position = new Vector2(Result.Key.X * 16, Result.Key.Y * 16);
 
-            switch (item.Value)
+            switch (Result.Value)
             {
                 case 0:
-                    spriteBatch.Draw(gameObject.texture_1, Position, gameObject.color);
+                    spriteBatch.Draw(GameObject.Texture_1, Position, GameObject.color);
                     break;
                 case 1:
-                    spriteBatch.Draw(gameObject.texture_2, Position, gameObject.color);
+                    spriteBatch.Draw(GameObject.Texture_2, Position, GameObject.color);
                     break;
                 case 2:
-                    spriteBatch.Draw(gameObject.texture_1, Position, gameObject.color);
+                    spriteBatch.Draw(GameObject.Texture_1, Position, GameObject.color);
                     break;
             }
         }
-    }
-
-    public override void Update()
-    {
     }
 }

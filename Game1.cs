@@ -10,18 +10,18 @@ using System.Reflection.Emit;
 namespace RPG_OOMS_Shawn_Bernard
 {
     /// <summary>
-    /// This is my game
+    /// This is my messy RPG game
     /// </summary>
     public class Game1 : Game
     {
-        public GraphicsDeviceManager _graphics;
-        public SpriteBatch _spriteBatch;
-        Scene _scene;
-        Player player;
-        Map map;
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+        private Scene _scene;
+        private Player player;
+        private Map map;
 
         /// <summary>
-        /// This is 
+        /// This will add anything needed for the game when a new game1 is made
         /// </summary>
         public Game1()
         {
@@ -35,7 +35,6 @@ namespace RPG_OOMS_Shawn_Bernard
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            //_scene.Start();
             base.Initialize();
         }
 
@@ -48,12 +47,11 @@ namespace RPG_OOMS_Shawn_Bernard
             Texture2D groundTexture = Content.Load<Texture2D>("Ground");
             Texture2D wallTexture = Content.Load<Texture2D>("Wall");
 
-            // You can now pass these textures to your game objects
+            // Creating my player and map
             player = new Player(playerTexture);
             map = new Map(wallTexture, groundTexture);
 
-            // Optionally set other objects' textures like the ground or walls
-            // Add your objects to the scene
+            //Adding my game objects to my scene game object list
             _scene.AddGameObject(map);
             _scene.AddGameObject(player);
         }

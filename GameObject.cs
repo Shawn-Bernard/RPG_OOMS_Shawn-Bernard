@@ -7,12 +7,24 @@ using System.Diagnostics;
 public class GameObject
 {
     private List<Component> components;
-    public Dictionary<Vector2, int> tileMap;
 
-    public Texture2D texture_1;
-    public Texture2D texture_2;
-    public Vector2 position;
+    private Texture2D texture_1;
+    /// <summary>
+    /// Will Get the texture_1 and set value to texture_1
+    /// </summary>
+    public Texture2D Texture_1 { get => texture_1; set => texture_1 = value; }
 
+    private Texture2D texture_2;
+    /// <summary>
+    /// Will Get the texture_2 and set value to texture_2
+    /// </summary>
+    public Texture2D Texture_2 { get => texture_2; set => texture_2 = value; }
+
+    private Vector2 position;
+    /// <summary>
+    /// Will Get the position and set value to position
+    /// </summary>
+    public Vector2 Position { get => position; set => position = value; }
 
 
     public Color color = Color.White;
@@ -41,23 +53,25 @@ public class GameObject
     {
         components.Add(component);
     }
-
-    public void RemoveComponent(Component component)
-    {
-        components.Remove(component);
-    }
-
+    /// <summary>
+    /// Takes in a sprite batch so it can be used in components
+    /// </summary>
+    /// <param name="spriteBatch"></param>
     public void DrawObject(SpriteBatch spriteBatch)
     {
         foreach (Component component in components)
         {
+            //I don't think I need to do this but I'm so scared to try it
             component.OnDraw(spriteBatch);
         }
     }
-
-    public void Update(GameTime gameTime)
+    /// <summary>
+    /// Updating my components with update in them 
+    /// </summary>
+    /// <param name="gameTime"></param>
+    public void Update()
     {
-        foreach (var component in components)
+        foreach (Component component in components)
         {
             component.Update();
         }

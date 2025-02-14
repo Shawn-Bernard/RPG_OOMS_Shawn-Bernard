@@ -1,9 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using System.Xml;
+/// <summary>
+/// This will hold any components logic for methods
+/// </summary>
 public abstract class Component
 {
-    public GameObject gameObject;
+    private GameObject gameObject;
+
+    public GameObject GameObject { get => gameObject; private set => gameObject = value; }
     /// <summary>
     /// So I can set my object for reference and also start my method 
     /// </summary>
@@ -15,28 +20,22 @@ public abstract class Component
     }
 
     /// <summary>
-    /// So I can throw in anything i need for my methods within in the start
+    /// Making these virtaul because abstract will force me to add these, but will need them for some method
     /// </summary>
-    public virtual void Start()
-    {
-
-    }
+    public virtual void Start() { }
 
     /// <summary>
-    /// So I can threw in any method that needs to be updated within the class
+    /// Making these virtaul because abstract will force me to add these, but will need them for some method
     /// </summary>
-    public virtual void Update()
-    {
-
-    }
+    public virtual void Update() { }
 
     /// <summary>
-    /// Making OnDraw method virtual so I can override to make my map
+    /// Making a virtual OnDraw base and overriding for my map
     /// </summary>
     /// <param name="spriteBatch"></param>
     public virtual void OnDraw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(gameObject.texture_1, gameObject.position, gameObject.color);
+        spriteBatch.Draw(gameObject.Texture_1, gameObject.Position, gameObject.color);
     }
 }
 

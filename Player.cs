@@ -10,17 +10,20 @@ using System.Threading;
 /// </summary>
 public class Player : GameObject
 {
+
+    /// <summary>
+    /// Setting the sprite when a new player is made
+    /// </summary>
+    /// <param name="texture"></param>
     public Player(Texture2D texture) : base(texture)
     {
-        this.texture_1 = texture;
+        this.Texture_1 = texture;
 
         PlayerMovement movement = new PlayerMovement();
 
         movement.SetGameObject(this);
 
         AddComponent(movement);
-
-        //tileMap = map.tileMap;
     }
 
 }
@@ -29,39 +32,33 @@ public class Player : GameObject
 /// </summary>
 public class PlayerMovement : Component
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public void Controller()
+    private void Controller()
     {
         KeyboardState keyState = Keyboard.GetState();
+        //Giving my direction the same vector2 as my player
+        Vector2 Direction = GameObject.Position;
         if (keyState.IsKeyDown(Keys.W))
         {
-            gameObject.position.Y -= 1;
+            Direction.Y -= 1;
         }
         if (keyState.IsKeyDown(Keys.A))
         {
-            gameObject.position.X -= 1;
+            Direction.X -= 1;
         }
         if (keyState.IsKeyDown(Keys.S))
         {
-            gameObject.position.Y += 1;
+            Direction.Y += 1;
         }
         if (keyState.IsKeyDown(Keys.D))
         {
-            gameObject.position.X += 1;
+            Direction.X += 1;
         }
-    }
-    /// <summary>
-    /// Anything I need for player movement would go here
-    /// </summary>
-    public override void Start()
-    {
-        
+        // After that we give the value direction to player position
+        GameObject.Position = Direction;
     }
 
     /// <summary>
-    /// Updating my player position by updating controller
+    /// Overrideing updating my player position by updating controller
     /// </summary>
     public override void Update()
     {
