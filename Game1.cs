@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection.Emit;
+using System.Xml;
 
 namespace RPG_OOMS_Shawn_Bernard
 {
