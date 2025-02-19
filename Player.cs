@@ -32,26 +32,28 @@ public class Player : GameObject
 /// </summary>
 public class PlayerMovement : Component
 {
+    float Speed = 3;
     private void Controller()
     {
         KeyboardState keyState = Keyboard.GetState();
         //Giving my direction the same vector2 as my player
         Vector2 Direction = GameObject.Position;
-        if (keyState.IsKeyDown(Keys.W))
+        //Make this not read all the time so the movement would be 16 instead of 
+        if (keyState.IsKeyUp(Keys.W))
         {
-            Direction.Y -= 1;
+            Direction.Y += Speed;
         }
-        if (keyState.IsKeyDown(Keys.A))
+        if (keyState.IsKeyUp(Keys.A))
         {
-            Direction.X -= 1;
+            Direction.X += Speed;
         }
-        if (keyState.IsKeyDown(Keys.S))
+        if (keyState.IsKeyUp(Keys.S))
         {
-            Direction.Y += 1;
+            Direction.Y -= Speed;
         }
-        if (keyState.IsKeyDown(Keys.D))
+        if (keyState.IsKeyUp(Keys.D))
         {
-            Direction.X += 1;
+            Direction.X -= Speed;
         }
         // After that we give the value direction to player position
         GameObject.Position = Direction;
