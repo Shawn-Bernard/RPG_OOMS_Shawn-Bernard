@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,15 +25,20 @@ public class Map : GameObject
 public class LoadMap : Component
 {
     private string path = $"{Environment.CurrentDirectory}/../../../Maps/";
-    private Dictionary<Vector2, int> tileMap;
+    public Dictionary<Vector2, int> tileMap;
     private List<string> Maps = new List<string>();
 
-    public override void Start()
+    public LoadMap()
     {
         AddPreMadeMaps();
+        tileMap = TextMap(path + PickRandomMap());
+    }
+    public override void Start()
+    {
+        //AddPreMadeMaps();
         //Debug.Write(path + PickRandomMap());
         //Adding in my path string with my random map string
-        tileMap = TextMap(path+PickRandomMap());
+        //tileMap = TextMap(path+PickRandomMap());
         //Debug.Write($"im here");
 
     }

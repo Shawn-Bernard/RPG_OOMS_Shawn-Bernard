@@ -8,13 +8,13 @@ public class GameObject
 {
     private List<Component> components;
 
-    private Texture2D texture_1;
+    public Texture2D texture_1;
     /// <summary>
     /// Will Get the texture_1 and set value to texture_1
     /// </summary>
     public Texture2D Texture_1 { get => texture_1; set => texture_1 = value; }
 
-    private Texture2D texture_2;
+    public Texture2D texture_2;
     /// <summary>
     /// Will Get the texture_2 and set value to texture_2
     /// </summary>
