@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using RPG_OOMS_Shawn_Bernard;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,7 +21,7 @@ public class Player : GameObject
     public Player(Texture2D texture) : base(texture)
     {
         this.Texture_1 = texture;
-        Position = new Vector2(20, 20);
+        Position = new Vector2(16, 16);
         PlayerMovement movement = new PlayerMovement();
 
         movement.SetGameObject(this);
@@ -35,60 +36,52 @@ public class Player : GameObject
 public class PlayerMovement : Component
 {
     LoadMap loadMap;
-    //int[,]
+    KeyInput WKeyInput;
+    KeyInput AKeyInput;
+    KeyInput SKeyInput;
+    KeyInput DKeyInput;
     public PlayerMovement()
     {
         loadMap = new LoadMap();
+        WKeyInput = new KeyInput(Keys.W);
+        AKeyInput = new KeyInput(Keys.A);
+        SKeyInput = new KeyInput(Keys.S);
+        DKeyInput = new KeyInput(Keys.D);
         //loadMap.Start();
-        
+
     }
-    bool isKeyPressed;
-    float Speed = 3;
     private void Controller()
     {
-        KeyboardState keyState = Keyboard.GetState();
         //Giving my direction the same vector2 as my player
-        Vector2 Direction = GameObject.Position;
-        //Make this not read all the time so the movement would be 16 instead of 
-        //if (keyState.IsKeyUp(Keys.W))
-        if (keyState.IsKeyDown(Keys.W))
+        Vector2 TargetPosition = GameObject.Position;
+        // If my return key state is the key state "pressed" then move
+        if (WKeyInput.GetKeyState() == KeyInput.keyState.Pressed)
         {
-            if (!isKeyPressed)
-                Checktile(new Vector2(GameObject.Position.X,GameObject.Position.Y -1));
+            TargetPosition.Y -= 16;
 
-            //Direction.Y += Speed;
         }
-        //if (keyState.IsKeyUp(Keys.A))
-        if (keyState.IsKeyDown(Keys.A))
+        if (AKeyInput.GetKeyState() == KeyInput.keyState.Pressed)
         {
-            if (!isKeyPressed)
-                Checktile(new Vector2(GameObject.Position.X - 1, GameObject.Position.Y));
+            TargetPosition.X -= 16;
             //Direction.X += Speed;
         }
-        //if (keyState.IsKeyUp(Keys.S))
-        if (keyState.IsKeyDown(Keys.S))
+        if (SKeyInput.GetKeyState() == KeyInput.keyState.Pressed)
         {
-            if (!isKeyPressed)
-                Checktile(new Vector2(GameObject.Position.X, GameObject.Position.Y + 1));
-            //Direction.Y -= Speed;
+            TargetPosition.Y += 16;
         }
-        //if (keyState.IsKeyUp(Keys.D))
-        if (keyState.IsKeyDown(Keys.D))
+        if (DKeyInput.GetKeyState() == KeyInput.keyState.Pressed)
         {
-            if (!isKeyPressed)
-                Checktile(new Vector2(GameObject.Position.X +1,GameObject.Position.Y));
-            //Direction.X -= Speed;
+            TargetPosition.X += 16;
         }
-        else
-        {
-            isKeyPressed = false;
-        }
+        
+
         // After that we give the value direction to player position
-        //GameObject.Position = Direction;
+        GameObject.Position = TargetPosition;
     }
-    /*
+    
     void InteractOrMove(Vector2 Direction)
     {
+        /*
         //If this returns false do these
         if (!MovePlayer(Direction, out LoadMap checkTile))
         {
@@ -109,8 +102,8 @@ public class PlayerMovement : Component
             {
 
             }
-        }
-    }*/
+        }*/
+    }
 
     private void Checktile(Vector2 Direction)
     {
@@ -130,6 +123,12 @@ public class PlayerMovement : Component
     /// </summary>
     public override void Update()
     {
+        KeyboardState keyState = Keyboard.GetState();
         Controller();
+        WKeyInput.UpdateKey(keyState);
+        AKeyInput.UpdateKey(keyState);
+        SKeyInput.UpdateKey(keyState);
+        DKeyInput.UpdateKey(keyState);
+
     }
 }
