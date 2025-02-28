@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RPG_OOMS_Shawn_Bernard;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,12 +27,15 @@ public class LoadMap : Component
 {
     private string path = $"{Environment.CurrentDirectory}/../../../Maps/";
     public Dictionary<Vector2, int> tileMap;
+    public TileChecker textureManager;
+
     private List<string> Maps = new List<string>();
 
     public LoadMap()
     {
         AddPreMadeMaps();
         tileMap = TextMap(path + PickRandomMap());
+        textureManager = new TileChecker(this);
     }
     public override void Start()
     {

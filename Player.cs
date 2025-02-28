@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RPG_OOMS_Shawn_Bernard;
@@ -13,7 +14,6 @@ using System.Threading;
 /// </summary>
 public class Player : GameObject
 {
-
     /// <summary>
     /// Setting the sprite when a new player is made
     /// </summary>
@@ -21,9 +21,7 @@ public class Player : GameObject
     public Player(Texture2D texture) : base(texture)
     {
         this.Texture_1 = texture;
-        Position = new Vector2(16, 16);
         PlayerMovement movement = new PlayerMovement();
-
         movement.SetGameObject(this);
 
         AddComponent(movement);
@@ -40,6 +38,8 @@ public class PlayerMovement : Component
     KeyInput AKeyInput;
     KeyInput SKeyInput;
     KeyInput DKeyInput;
+
+    Vector2 tilePosition;
     public PlayerMovement()
     {
         loadMap = new LoadMap();
@@ -48,76 +48,66 @@ public class PlayerMovement : Component
         SKeyInput = new KeyInput(Keys.S);
         DKeyInput = new KeyInput(Keys.D);
         //loadMap.Start();
+        //tilePosition = new Vector2(1, 1);
 
+
+        //GameObject.Position = tilePosition * 16;
+    }
+    public override void Start()
+    {
+        //This would be my tile position for checking
+        tilePosition = new Vector2(1, 1);
+
+        //Giving my player position equal to "local tile position" and then * 16 for world space
+        GameObject.Position = tilePosition * 16;
     }
     private void Controller()
     {
         //Giving my direction the same vector2 as my player
-        Vector2 TargetPosition = GameObject.Position;
+        Vector2 targetPosition = tilePosition;
         // If my return key state is the key state "pressed" then move
         if (WKeyInput.GetKeyState() == KeyInput.keyState.Pressed)
         {
-            TargetPosition.Y -= 16;
-
+            targetPosition.Y -= 1;
         }
         if (AKeyInput.GetKeyState() == KeyInput.keyState.Pressed)
         {
-            TargetPosition.X -= 16;
-            //Direction.X += Speed;
+            targetPosition.X -= 1;
         }
         if (SKeyInput.GetKeyState() == KeyInput.keyState.Pressed)
         {
-            TargetPosition.Y += 16;
+            targetPosition.Y += 1;
         }
         if (DKeyInput.GetKeyState() == KeyInput.keyState.Pressed)
         {
-            TargetPosition.X += 16;
+            targetPosition.X += 1;
         }
-        
 
-        // After that we give the value direction to player position
-        GameObject.Position = TargetPosition;
+        InteractOrMove(targetPosition);
     }
     
-    void InteractOrMove(Vector2 Direction)
+    void InteractOrMove(Vector2 targetPosition)
     {
-        /*
-        //If this returns false do these
-        if (!MovePlayer(Direction, out LoadMap checkTile))
+        //Returns a number from check tile method connected to 
+        int tile = loadMap.textureManager.checkTile(targetPosition);
+        switch (tile)
         {
-            //If my check tile is the enemy deal damage to the enemy
-            if (checkTile == Enemy.enemy.enemyTile)
-            {
-            }
-            //If my check tile is the weapon tile add 5 to my damage amount
-            else if (checkTile == MapGeneration.Map.weaponTile)
-            {
-            }
-            //If my check tile is the heal tile use health system method to heal 
-            else if (checkTile == MapGeneration.Map.healTile)
-            {// checking the position plus direction and setting that tile to nothing
-            }
-            //if my check tile is catus tile take damage using health system method
-            else if (checkTile == MapGeneration.Map.catusTile)
-            {
-
-            }
-        }*/
-    }
-
-    private void Checktile(Vector2 Direction)
-    {
-        Debug.WriteLine("Value "+ loadMap.tileMap.ContainsValue(2));
-        //Debug.WriteLine($"Value {loadMap.tileMap.ToArray<>} ";
-        Debug.WriteLine("Vector " + loadMap.tileMap.ContainsKey(Direction));
-        if (loadMap.tileMap.ContainsValue(0))
-        {
-            GameObject.Position = Direction;
-            
+            case 0:
+                //Wall
+                break;
+            case 1:
+                //Assigning my new target position to tile position
+                // example tilePosition (1,1) = targetPosition (2,1)
+                tilePosition = targetPosition;
+                break;
+            case 2:
+                //Spawn Point
+                tilePosition = targetPosition;
+                break;
         }
-        else return;
+        // Giving my player position my tile position and * it by pixel position
+        GameObject.Position = tilePosition * 16;
     }
-
     /// <summary>
     /// Overrideing updating my player position by updating controller
     /// </summary>
