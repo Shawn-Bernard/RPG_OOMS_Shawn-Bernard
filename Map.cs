@@ -33,12 +33,13 @@ public class LoadMap : Component
 
     public LoadMap()
     {
-        AddPreMadeMaps();
-        tileMap = TextMap(path + PickRandomMap());
-        textureManager = new TileChecker(this);
+        
     }
     public override void Start()
     {
+        AddPreMadeMaps();
+        tileMap = TextMap(path + PickRandomMap());
+        textureManager = new TileChecker(this);
         //AddPreMadeMaps();
         //Debug.Write(path + PickRandomMap());
         //Adding in my path string with my random map string
@@ -52,6 +53,12 @@ public class LoadMap : Component
         Maps.Add("Level_1.txt");
         Maps.Add("Level_2.txt");
         Maps.Add("Level_3.txt");
+    }
+
+    public int checkTile(Vector2 checkedPosition)
+    {
+        // Returning an int based on the checked position
+        return tileMap[checkedPosition];
     }
 
     //Picks a random map from the list of maps 

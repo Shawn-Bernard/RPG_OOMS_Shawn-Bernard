@@ -16,7 +16,7 @@ public abstract class Component
     public void SetGameObject(GameObject gameObject)
     {
         this.gameObject = gameObject;
-        Start();
+        //Start();
     }
 
     /// <summary>

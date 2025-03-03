@@ -44,6 +44,14 @@ public class Scene
 
         spriteBatch.End();
     }
+
+    public void Start()
+    {
+        foreach (GameObject Object in gameObject)
+        {
+            Object.Start();
+        }
+    }
     /// <summary>
     /// This is to update our scene and running through our list of game object and calling the update method for each of them 
     /// </summary>

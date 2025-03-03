@@ -42,21 +42,22 @@ public class PlayerMovement : Component
     Vector2 tilePosition;
     public PlayerMovement()
     {
-        loadMap = new LoadMap();
+        
         WKeyInput = new KeyInput(Keys.W);
         AKeyInput = new KeyInput(Keys.A);
         SKeyInput = new KeyInput(Keys.S);
         DKeyInput = new KeyInput(Keys.D);
         //loadMap.Start();
-        //tilePosition = new Vector2(1, 1);
+        tilePosition = new Vector2(1, 1);
 
 
         //GameObject.Position = tilePosition * 16;
     }
     public override void Start()
     {
+        loadMap = new LoadMap();
         //This would be my tile position for checking
-        tilePosition = new Vector2(1, 1);
+        //tilePosition = new Vector2(1, 1);
 
         //Giving my player position equal to "local tile position" and then * 16 for world space
         GameObject.Position = tilePosition * 16;
@@ -89,7 +90,7 @@ public class PlayerMovement : Component
     void InteractOrMove(Vector2 targetPosition)
     {
         //Returns a number from check tile method connected to 
-        int tile = loadMap.textureManager.checkTile(targetPosition);
+        int tile = loadMap.checkTile(targetPosition);
         switch (tile)
         {
             case 0:

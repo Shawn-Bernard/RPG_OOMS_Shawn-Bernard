@@ -65,6 +65,14 @@ public class GameObject
             component.OnDraw(spriteBatch);
         }
     }
+
+    public void Start()
+    {
+        foreach (Component component in components)
+        {
+            component.Start();
+        }
+    }
     /// <summary>
     /// Updating my components with update in them 
     /// </summary>

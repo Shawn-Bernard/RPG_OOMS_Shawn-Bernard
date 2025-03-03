@@ -30,6 +30,7 @@ namespace RPG_OOMS_Shawn_Bernard
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             _scene = new Scene();
+            _scene.Start();
 
         }
 
@@ -37,6 +38,7 @@ namespace RPG_OOMS_Shawn_Bernard
         {
             // TODO: Add your initialization logic here
             base.Initialize();
+            _scene.Start();
         }
 
         protected override void LoadContent()
