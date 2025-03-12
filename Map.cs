@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 public class Map : GameObject
 {
@@ -23,33 +24,68 @@ public class Map : GameObject
 }
 public class LoadMap : Component
 {
+    Random rng = new ();
+
     private string path = $"{Environment.CurrentDirectory}/../../../Maps/";
 
     public static LoadMap instance;
 
     private Dictionary<Vector2, int> tileMap;
 
+    int rngX;
+
+    int rngY;
+
     private List<string> Maps = new List<string>();
 
+    
     public LoadMap()
     {
         instance = this;
         AddPreMadeMaps();
         MapStyle();
     }
-    public override void Awake()
-    {
-        
-    }
-    public override void Start()
-    {
-    }
 
     public void MapStyle()
     {
-        tileMap = new Dictionary<Vector2, int>();
-        tileMap = TextMap(path + PickRandomMap());
+        //tileMap = TextMap(path + PickRandomMap());
+        tileMap = InitializeMap();
+        Debug.WriteLine(tileMap.Count);
     }
+
+    private Dictionary<Vector2, int> InitializeMap()
+    {
+        Dictionary<Vector2, int> MapGen = new Dictionary<Vector2, int>();
+        rngX = rng.Next(15, 30);
+        rngY = rng.Next(15, 30);
+        //Step 1 initializing map
+        for (int x = 0; x < rngX; x++)
+        {
+            for (int y = 0; y < rngY; y++)
+            {
+                MapGen.Add(new Vector2(x, y),1);
+            }
+        }
+
+        //Step 2 placing walls
+        for (int x = 0; x < rngX; x++)
+        {
+            for (int y = 0; y < rngY; y++)
+            {
+                if (x == 0 || y == 0 || x == rngX -1 || y == rngY -1)
+                {
+                    MapGen[new Vector2(x, y)] = 0;
+                }
+            }
+        }
+
+        //Step 3
+
+
+
+        return MapGen;
+    }
+
     // Adding my list of strings for my map
     private void AddPreMadeMaps()
     {
