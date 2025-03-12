@@ -16,9 +16,10 @@ public abstract class Component
     public void SetGameObject(GameObject gameObject)
     {
         this.gameObject = gameObject;
-        //Start();
+        Awake();
     }
 
+    public virtual void Awake() { }
     /// <summary>
     /// Making these virtaul because abstract will force me to add these, but will need them for some method
     /// </summary>

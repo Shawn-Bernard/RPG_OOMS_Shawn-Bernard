@@ -44,6 +44,13 @@ public class Scene
 
         spriteBatch.End();
     }
+    public void Awake()
+    {
+        foreach (GameObject Object in gameObject)
+        {
+            Object.Awake();
+        }
+    }
 
     public void Start()
     {

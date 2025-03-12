@@ -18,7 +18,8 @@ namespace RPG_OOMS_Shawn_Bernard
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Scene _scene;
-        private Player player;
+        private Entity player;
+        private Entity enemy;
         private Map map;
 
         /// <summary>
@@ -30,8 +31,7 @@ namespace RPG_OOMS_Shawn_Bernard
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             _scene = new Scene();
-            _scene.Start();
-
+            _scene.Awake();
         }
 
         protected override void Initialize()
@@ -47,12 +47,15 @@ namespace RPG_OOMS_Shawn_Bernard
             // TODO: use this.Content to load your game content here
 
             Texture2D playerTexture = Content.Load<Texture2D>("Player");
-            Texture2D groundTexture = Content.Load<Texture2D>("Ground");
             Texture2D wallTexture = Content.Load<Texture2D>("Wall");
+            Texture2D groundTexture = Content.Load<Texture2D>("Ground");
+            Texture2D exitTexture = Content.Load<Texture2D>("Exit");
 
             // Creating my player and map
-            player = new Player(playerTexture);
-            map = new Map(wallTexture, groundTexture);
+            player = new Entity();
+            map = new Map();
+            player.AddTexture(playerTexture);
+            map.AddTexture(wallTexture,groundTexture);
 
             //Adding my game objects to my scene game object list
             _scene.AddGameObject(map);

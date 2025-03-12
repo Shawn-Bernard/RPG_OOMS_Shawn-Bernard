@@ -3,8 +3,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
-public class GameObject
+public abstract class GameObject
 {
     private List<Component> components;
 
@@ -32,18 +31,19 @@ public class GameObject
     /// Using polymorphism checking for one sprite injected in
     /// </summary>
     /// <param name="Sprite_1"></param>
-    public GameObject(Texture2D Sprite_1)
+    public GameObject()
     {
         components = new List<Component>();
     }
-    /// <summary>
-    /// Using polymorphism checking for two sprite injected in
-    /// </summary>
-    /// <param name="Sprite_1"></param>
-    /// <param name="Sptite_2"></param>
-    public GameObject(Texture2D Sprite_1, Texture2D Sptite_2)
+
+    public void AddTexture(Texture2D Sprite_1)
     {
-        components = new List<Component>();
+        Texture_1 = Sprite_1;
+    }
+    public void AddTexture(Texture2D Sprite_1, Texture2D Sprite_2)
+    {
+        Texture_1 = Sprite_1;
+        Texture_2 = Sprite_2;
     }
     /// <summary>
     /// Giving my objects to add components while 
@@ -63,6 +63,13 @@ public class GameObject
         {
             //I don't think I need to do this but I'm so scared to try it
             component.OnDraw(spriteBatch);
+        }
+    }
+    public void Awake()
+    {
+        foreach (Component component in components)
+        {
+            component.Awake();
         }
     }
 

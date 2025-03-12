@@ -12,42 +12,42 @@ using System.Threading;
 /// <summary>
 /// Player Class where we add our components and make an object reference for the component 
 /// </summary>
-public class Player : GameObject
+public class Entity : GameObject
 {
     /// <summary>
     /// Setting the sprite when a new player is made
     /// </summary>
     /// <param name="texture"></param>
-    public Player(Texture2D texture) : base(texture)
+    public Entity()
     {
-        this.Texture_1 = texture;
-        PlayerMovement movement = new PlayerMovement();
+        Player movement = new Player();
         movement.SetGameObject(this);
 
         AddComponent(movement);
     }
 
 }
+
+
 /// <summary>
 /// Player movement class where we use our player game object reference for movement
 /// </summary>
-public class PlayerMovement : Component
+public class Player : Component
 {
-    LoadMap loadMap;
     KeyInput WKeyInput;
     KeyInput AKeyInput;
     KeyInput SKeyInput;
     KeyInput DKeyInput;
 
     Vector2 tilePosition;
-    public PlayerMovement()
+    public Player()
     {
         
         WKeyInput = new KeyInput(Keys.W);
         AKeyInput = new KeyInput(Keys.A);
         SKeyInput = new KeyInput(Keys.S);
         DKeyInput = new KeyInput(Keys.D);
-        //loadMap.Start();
+        //loadMap.Start();d
         tilePosition = new Vector2(1, 1);
 
 
@@ -55,7 +55,6 @@ public class PlayerMovement : Component
     }
     public override void Start()
     {
-        loadMap = new LoadMap();
         //This would be my tile position for checking
         //tilePosition = new Vector2(1, 1);
 
@@ -90,7 +89,7 @@ public class PlayerMovement : Component
     void InteractOrMove(Vector2 targetPosition)
     {
         //Returns a number from check tile method connected to 
-        int tile = loadMap.checkTile(targetPosition);
+        int tile = LoadMap.instance.checkTile(targetPosition);
         switch (tile)
         {
             case 0:

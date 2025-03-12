@@ -13,10 +13,8 @@ public class Map : GameObject
     /// </summary>
     /// <param name="Sprite_1"></param>
     /// <param name="Sprite_2"></param>
-    public Map(Texture2D Sprite_1,Texture2D Sprite_2 ) : base(Sprite_1, Sprite_2)
+    public Map()
     {
-        this.Texture_1 = Sprite_1;
-        this.Texture_2 = Sprite_2;
         Debug.Write($"map is here ");
         LoadMap loadMap = new LoadMap();
         loadMap.SetGameObject(this);
@@ -26,26 +24,31 @@ public class Map : GameObject
 public class LoadMap : Component
 {
     private string path = $"{Environment.CurrentDirectory}/../../../Maps/";
-    public Dictionary<Vector2, int> tileMap;
-    public TileChecker textureManager;
+
+    public static LoadMap instance;
+
+    private Dictionary<Vector2, int> tileMap;
 
     private List<string> Maps = new List<string>();
 
     public LoadMap()
     {
+        instance = this;
+        AddPreMadeMaps();
+        MapStyle();
+    }
+    public override void Awake()
+    {
         
     }
     public override void Start()
     {
-        AddPreMadeMaps();
-        tileMap = TextMap(path + PickRandomMap());
-        textureManager = new TileChecker(this);
-        //AddPreMadeMaps();
-        //Debug.Write(path + PickRandomMap());
-        //Adding in my path string with my random map string
-        //tileMap = TextMap(path+PickRandomMap());
-        //Debug.Write($"im here");
+    }
 
+    public void MapStyle()
+    {
+        tileMap = new Dictionary<Vector2, int>();
+        tileMap = TextMap(path + PickRandomMap());
     }
     // Adding my list of strings for my map
     private void AddPreMadeMaps()
