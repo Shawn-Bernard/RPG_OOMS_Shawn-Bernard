@@ -48,21 +48,21 @@ public class LoadMap : Component
 
     public void MapStyle()
     {
-        //tileMap = TextMap(path + PickRandomMap());
         tileMap = InitializeMap();
-        Debug.WriteLine(tileMap.Count);
+        //tileMap = TextMap(path + PickRandomMap());
     }
 
     private Dictionary<Vector2, int> InitializeMap()
     {
         Dictionary<Vector2, int> MapGen = new Dictionary<Vector2, int>();
         rngX = rng.Next(15, 30);
-        rngY = rng.Next(15, 30);
+        rngY = rng.Next(15, 20);
         //Step 1 initializing map
         for (int x = 0; x < rngX; x++)
         {
             for (int y = 0; y < rngY; y++)
             {
+                //Adding my base map with only floors
                 MapGen.Add(new Vector2(x, y),1);
             }
         }
@@ -72,6 +72,7 @@ public class LoadMap : Component
         {
             for (int y = 0; y < rngY; y++)
             {
+                //If statement that checks arounf the borders
                 if (x == 0 || y == 0 || x == rngX -1 || y == rngY -1)
                 {
                     MapGen[new Vector2(x, y)] = 0;
@@ -79,9 +80,50 @@ public class LoadMap : Component
             }
         }
 
-        //Step 3
+        //Step 3: Place clusters
+        //Making a amount of clusters equal to the max map count
+        int numClusters = MapGen.Count;
+        for (int i = 0; i < numClusters; i++)
+        {
+            //Picking my start x & y for the to start clusters
+            int clusterX = rng.Next(1, rngX);
+            int clusterY = rng.Next(1, rngY);
 
+            //Picking a random width & height for my clusters
+            int clusterWidth = rng.Next(2, 4);
+            int clusterHeight = rng.Next(2, 4);
 
+            //Making a bool to check if i can place
+            bool canPlace = true;
+
+            //Checking a negative space so we can look around the cluster to see if we can place 
+            //The reason being check back 1 space (-1) then forward space (width + 1)
+            for (int x = -1; x < clusterWidth + 1; x++)
+            {
+                for (int y = -1; y < clusterHeight + 1; y++)
+                {
+                    Vector2 checkPosition = new Vector2(clusterX + x, clusterY + y);
+                    //If my map has the key position & the value of 0 can place is false
+                    if (MapGen.ContainsKey(checkPosition) && MapGen[checkPosition] == 0)
+                    {
+                        canPlace = false;
+                    }
+                }
+            }
+            //If we can place doing a for loop with the cluster width / height
+            if (canPlace)
+            {
+                for (int x = 0; x < clusterWidth; x++)
+                {
+                    for (int y = 0; y < clusterHeight; y++)
+                    {
+                        Vector2 ClusterPosition = new Vector2(clusterX + x, clusterY + y);
+
+                        MapGen[ClusterPosition] = 0;
+                    }
+                }
+            }
+        }
 
         return MapGen;
     }

@@ -12,15 +12,15 @@ using System.Threading;
 /// <summary>
 /// Player Class where we add our components and make an object reference for the component 
 /// </summary>
-public class Entity : GameObject
+public class Player : GameObject
 {
     /// <summary>
-    /// Setting the sprite when a new player is made
+    /// Setting the up compoenets with each new player
     /// </summary>
     /// <param name="texture"></param>
-    public Entity()
+    public Player()
     {
-        Player movement = new Player();
+        PlayerMovement movement = new PlayerMovement();
         movement.SetGameObject(this);
 
         AddComponent(movement);
@@ -32,7 +32,7 @@ public class Entity : GameObject
 /// <summary>
 /// Player movement class where we use our player game object reference for movement
 /// </summary>
-public class Player : Component
+public class PlayerMovement : Component
 {
     KeyInput WKeyInput;
     KeyInput AKeyInput;
@@ -40,7 +40,7 @@ public class Player : Component
     KeyInput DKeyInput;
 
     Vector2 tilePosition;
-    public Player()
+    public PlayerMovement()
     {
         
         WKeyInput = new KeyInput(Keys.W);
@@ -102,7 +102,8 @@ public class Player : Component
                 break;
             case 2:
                 //Spawn Point
-                tilePosition = targetPosition;
+                LoadMap.instance.MapStyle();
+                //tilePosition = targetPosition;
                 break;
         }
         // Giving my player position my tile position and * it by pixel position

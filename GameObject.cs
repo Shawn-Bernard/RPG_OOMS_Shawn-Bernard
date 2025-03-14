@@ -7,18 +7,24 @@ public abstract class GameObject
 {
     private List<Component> components;
 
-    public Texture2D texture_1;
+    private Texture2D texture_1;
     /// <summary>
     /// Will Get the texture_1 and set value to texture_1
     /// </summary>
     public Texture2D Texture_1 { get => texture_1; set => texture_1 = value; }
 
-    public Texture2D texture_2;
+    private Texture2D texture_2;
     /// <summary>
     /// Will Get the texture_2 and set value to texture_2
     /// </summary>
     public Texture2D Texture_2 { get => texture_2; set => texture_2 = value; }
 
+
+    private Texture2D texture_3;
+    /// <summary>
+    /// Will Get the texture_2 and set value to texture_2
+    /// </summary>
+    public Texture2D Texture_3 { get => texture_3; set => texture_3 = value; }
     private Vector2 position;
     /// <summary>
     /// Will Get the position and set value to position
@@ -40,7 +46,7 @@ public abstract class GameObject
     {
         Texture_1 = Sprite_1;
     }
-    public void AddTexture(Texture2D Sprite_1, Texture2D Sprite_2)
+    public void AddTexture(Texture2D Sprite_1, Texture2D Sprite_2, Texture2D Sprite_3)
     {
         Texture_1 = Sprite_1;
         Texture_2 = Sprite_2;
