@@ -31,7 +31,7 @@ namespace RPG_OOMS_Shawn_Bernard
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             _scene = new Scene();
-            _scene.Awake();
+            //_scene.Awake();
         }
 
         protected override void Initialize()
@@ -63,6 +63,8 @@ namespace RPG_OOMS_Shawn_Bernard
             //Adding my game objects to my scene game object list
             _scene.AddGameObject(map);
             _scene.AddGameObject(player);
+            _scene.AddGameObject(enemy);
+
         }
 
         protected override void Update(GameTime gameTime)

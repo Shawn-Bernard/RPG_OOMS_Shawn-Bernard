@@ -1,12 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Xml;
+using System;
+using System.Collections.Generic;
 /// <summary>
 /// This will hold any components logic for methods
 /// </summary>
 public abstract class Component
 {
     private GameObject gameObject;
+
+    public List<GameObject> gameObjectsInScene = new List<GameObject>();
+
 
     public GameObject GameObject { get => gameObject; private set => gameObject = value; }
     /// <summary>
@@ -17,6 +21,32 @@ public abstract class Component
     {
         this.gameObject = gameObject;
         Awake();
+    }
+    /// <summary>
+    /// This will find the object listed in the current scene and returns the object
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T FindGameObject<T>() where T : GameObject
+    {
+        for (int i = 0; i < gameObjectsInScene.Count; i++)
+        {
+            if (gameObjectsInScene[i] is T foundObject)
+            {
+
+                //Debug.Write($"[ This has been returned { foundObject } ]");
+                return foundObject;
+            }
+        }
+        return null;
+    }
+    /// <summary>
+    /// Gets scene objects list
+    /// </summary>
+    /// <param name="gameObjects"></param>
+    public void SceneObjectList(List<GameObject> gameObjects)
+    {
+        gameObjectsInScene = gameObjects;
     }
 
     public virtual void Awake() { }

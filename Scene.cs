@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,8 @@ using System.Xml;
 
 public class Scene
 {
-    private List<GameObject> gameObject;
+    public List<GameObject> gameObject;
+
     /// <summary>
     /// Making a new list of game objects when scene is created 
     /// </summary>
@@ -18,13 +20,33 @@ public class Scene
     {
         gameObject = new List<GameObject>();
     }
+    /*
+     * I'm trying to add soon not now 
+    public T FindGameObject<T>() where T : GameObject
+    {
+        for (int i = 0; i < gameObjectsInScene.Count; i++)
+        {
+            if (gameObjectsInScene[i] is T foundObject)
+            {
+
+                Debug.Write($"[ This has been returned { foundObject } ]");
+                return foundObject;
+            }
+        }
+        return null;
+    }
+    */
+
     /// <summary>
     /// Adding my game object to my list so I can do a foreach loop
     /// </summary>
     /// <param name="GameObject"></param>
     public void AddGameObject(GameObject GameObject)
     {
+        //Debug.Write("[ New added object ]");
         gameObject.Add(GameObject);
+        GameObject.AddObjectFromScene(this);
+
     }
 
     /// <summary>
@@ -46,6 +68,7 @@ public class Scene
     }
     public void Awake()
     {
+        //Debug.Write(" Wake ");
         foreach (GameObject Object in gameObject)
         {
             Object.Awake();
@@ -54,6 +77,7 @@ public class Scene
 
     public void Start()
     {
+        //Debug.Write(" Started ");
         foreach (GameObject Object in gameObject)
         {
             Object.Start();
