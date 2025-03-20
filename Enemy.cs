@@ -6,7 +6,7 @@ using RPG_OOMS_Shawn_Bernard;
 using System;
 
 
-public class Enemy : GameObject//Instead of GameObject this would be maybe public entity : GameObject then enemy : entity
+public class Enemy : Actor//Instead of GameObject this would be maybe public entity : GameObject then enemy : entity
 {
     /// <summary>
     /// Setting the up compoenets with each new enemy
@@ -18,6 +18,11 @@ public class Enemy : GameObject//Instead of GameObject this would be maybe publi
         AddComponent(new HealthSystem());
         AddComponent(new CombatSystem());
         AddComponent(new HealthSystem());
+    }
+
+    public override void TakeTurn()
+    {
+        GetComponent<EnemyMovement>().Controller();
     }
 }
 
@@ -51,7 +56,7 @@ public class EnemyMovement : Component
         GameObject.Position = tilePosition * pixelSize;
     }
 
-    private void Controller()
+    public void Controller()
     {
         //Giving my direction the same vector2 as my player
         Vector2 targetPosition = tilePosition;
@@ -108,6 +113,5 @@ public class EnemyMovement : Component
 
     public override void Update()
     {
-        Controller();
     }
 }

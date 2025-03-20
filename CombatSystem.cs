@@ -14,16 +14,19 @@ public class CombatSystem: Component
 
     public CombatSystem()
     {
+
     }
     public override void Start()
     {
+
     }
     /// <summary>
     /// Doesn't work but gonna try add new gameobject that holds this and returns true or false based on player or not
     /// </summary>
     /// <param name="turn"></param>
-    public void Turn(GameObject turn)
+    public void TakeTurn(GameObject turn)
     {
+
         //If (turn is player) returns true
 
         //else would return false

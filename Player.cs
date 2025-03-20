@@ -7,7 +7,7 @@ using RPG_OOMS_Shawn_Bernard;
 /// <summary>
 /// Player Class where we add our components and make an object reference for the component 
 /// </summary>
-public class Player : GameObject//Instead of GameObject this would be maybe public entity : GameObject then Player : entity
+public class Player : Actor//Instead of GameObject this would be maybe public entity : GameObject then Player : entity
 {
     /// <summary>
     /// Setting the up compoenets with each new player
@@ -17,11 +17,15 @@ public class Player : GameObject//Instead of GameObject this would be maybe publ
     {
         AddComponent(new PlayerMovement());
         AddComponent(new HealthSystem());
-        AddComponent(new CombatSystem());
-        AddComponent(new HealthSystem());
 
 
     }
+
+    public override void TakeTurn()
+    {
+
+    }
+
 
 }
 
@@ -69,7 +73,7 @@ public class PlayerMovement : Component
         // Setting the player starts at the correct position
         GameObject.Position = tilePosition * pixelSize;
     }
-    private void Controller()
+    public void Controller()
     {
 
         //Giving my direction the same vector2 as my player
